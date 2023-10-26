@@ -1,0 +1,39 @@
+syntax = "proto3";
+
+package api.shorturl.v1;
+
+option go_package = "next.data.layout/api/shorturl/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.shorturl.v1";
+
+import "google/api/annotations.proto";
+
+message ExpandRequest {
+	string shorten = 1;
+}
+
+message ExpandReply {
+	string url = 1;
+}
+
+message ShortenRequest {
+	string url = 1;
+}
+
+message ShortenReply {
+	string shorten = 1;
+}
+
+service ShortUrl {
+	rpc Expand(ExpandRequest) returns(ExpandReply) {
+		option (google.api.http) = {
+			get: "/expand/{shorten}"
+		};
+	}
+	rpc Shorten(ShortenRequest) returns(ShortenReply) {
+		option (google.api.http) = {
+			post: "/shorten/{url}"
+			body: "*"
+		};
+	}
+}
