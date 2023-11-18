@@ -36,6 +36,10 @@ server:
         options:
           '@type': type.googleapis.com/next.middleware.metadata.v1.Metadata
           prefix: []
+      - name: metrics
+        options:
+          '@type': type.googleapis.com/next.middleware.metrics.v1.Metrics
+          prefix: []
   grpc:
     addr: '0.0.0.0:9001'
     timeout: 1s
@@ -49,4 +53,8 @@ server:
       - name: metadata
         options:
           '@type': type.googleapis.com/next.middleware.metadata.v1.Metadata
+          prefix: []
+      - name: metrics
+        options:
+          '@type': type.googleapis.com/next.middleware.metrics.v1.Metrics
           prefix: []
