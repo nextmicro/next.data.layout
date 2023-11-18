@@ -1,9 +1,9 @@
 # ID
 id: '1001'
 # 名称
-name: gateway
+name: next.data.layout
 # 版本号
-version: v1.0.2-beta2
+version: v1.0.0
 # 服务元数据
 metadata:
   color: feature-v1
