@@ -2,29 +2,22 @@ package main
 
 import (
 	"flag"
-	"os"
 	"path/filepath"
 
 	"github.com/nextmicro/logger"
 	"github.com/nextmicro/next"
-	"next.data.layout/internal/conf"
 	"github.com/nextmicro/next/config"
 	"github.com/nextmicro/next/transport/grpc"
 	"github.com/nextmicro/next/transport/http"
+	"next.data.layout/internal/conf"
 
 	_ "go.uber.org/automaxprocs"
 )
 
 // go build -ldflags "-X main.Version=x.y.z"
 var (
-	// Name is the name of the compiled software.
-	Name string
-	// Version is the version of the compiled software.
-	Version string
 	// flagconf is the config flag.
 	flagconf string
-
-	id, _ = os.Hostname()
 )
 
 func init() {
@@ -33,10 +26,6 @@ func init() {
 
 func newApp(logger logger.Logger, gs *grpc.Server, hs *http.Server) (*next.Next, error) {
 	return next.New(
-		next.ID(id),
-		next.Name(Name),
-		next.Version(Version),
-		next.Metadata(map[string]string{}),
 		next.Logger(logger),
 		next.Server(
 			gs,
