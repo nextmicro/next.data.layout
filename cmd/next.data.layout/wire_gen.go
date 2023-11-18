@@ -8,12 +8,12 @@ package main
 
 import (
 	"github.com/nextmicro/logger"
-	"github.com/nextmicro/next"
 	"next.data.layout/internal/biz"
 	"next.data.layout/internal/conf"
 	"next.data.layout/internal/data"
 	"next.data.layout/internal/server"
 	"next.data.layout/internal/service"
+	"next.data.layout/internal/svc"
 )
 
 import (
@@ -23,7 +23,7 @@ import (
 // Injectors from wire.go:
 
 // wireApp init next application.
-func wireApp(confData *conf.Data, loggerLogger logger.Logger) (*next.Next, func(), error) {
+func wireApp(confData *conf.Data, loggerLogger logger.Logger) (*Injector, func(), error) {
 	dataData, cleanup, err := data.NewData(confData, loggerLogger)
 	if err != nil {
 		return nil, nil, err
@@ -34,12 +34,17 @@ func wireApp(confData *conf.Data, loggerLogger logger.Logger) (*next.Next, func(
 	shortUrlService := service.NewShortUrlService()
 	grpcServer := server.NewGRPCServer(greeterService, shortUrlService, loggerLogger)
 	httpServer := server.NewHTTPServer(greeterService, shortUrlService, loggerLogger)
-	nextNext, err := newApp(loggerLogger, grpcServer, httpServer)
+	next, err := newApp(loggerLogger, grpcServer, httpServer)
 	if err != nil {
 		cleanup()
 		return nil, nil, err
 	}
-	return nextNext, func() {
+	serviceContext := svc.NewServiceContext()
+	injector := &Injector{
+		Next:           next,
+		serviceContext: serviceContext,
+	}
+	return injector, func() {
 		cleanup()
 	}, nil
 }
